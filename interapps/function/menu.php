@@ -45,6 +45,17 @@ switch ($halaman) {
         include "page/user/delete.php";
         break;
 
+    case 'profile':
+        include "page/user/profile.php";
+        break;
+
+    case 'change_password':
+        include "page/user/change_password.php";
+        break;
+    case 'update_profile':
+        include "page/user/update_profile.php";
+        break;
+
     case 'logout':
         include "page/logout.php";
         break;

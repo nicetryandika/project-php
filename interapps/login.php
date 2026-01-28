@@ -38,8 +38,9 @@
             if (mysqli_num_rows($query) > 0) {
                 if ($password === $user['password']) {
                     $_SESSION['user_id']  = $user['id'];
+                    $_SESSION['avatar'] = $user['avatar'];
                     $_SESSION['username'] = $user['username'];
-                    $_SESSION['nama']     = $user['username']; // 🔥 INI KUNCINYA
+                    $_SESSION['nama']     = $user['nama']; // 🔥 INI KUNCINYA
                     $_SESSION['role']     = $user['role'];
                     $_SESSION['timeout']  = time() + (24 * 60 * 60);
                     echo "

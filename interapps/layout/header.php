@@ -1,7 +1,8 @@
 <?php
 // fallback jika session belum ada
-$nama = $_SESSION['nama'] ?? 'Guest';
-$role = $_SESSION['role'] ?? 'Unknown';
+$nama   = $_SESSION['nama'] ?? 'Guest';
+$role   = $_SESSION['role'] ?? 'Unknown';
+$avatar = $_SESSION['avatar'] ?? 'default.png';
 
 // mapping role biar lebih rapi ditampilkan
 $roleLabel = match ($role) {
@@ -49,23 +50,41 @@ $roleLabel = match ($role) {
                     </a>
 
                     <!-- DROPDOWN MENU -->
-                    <ul class="dropdown-menu dropdown-menu-end" style="min-width: 11rem">
+                    <ul class="dropdown-menu dropdown-menu-end" style="min-width: 12rem">
                         <li>
                             <h6 class="dropdown-header">
                                 Hello, <?= htmlspecialchars($nama) ?>
                             </h6>
                         </li>
-                        <li><hr class="dropdown-divider" /></li>
 
                         <li>
                             <a class="dropdown-item"
-                               href="index.php?halaman=logout"
-                               onclick="return confirm('Yakin ingin logout?')">
+                            href="index.php?halaman=profile">
+                                <i class="icon-mid bi bi-person me-2"></i>
+                                Profile
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item"
+                            href="index.php?halaman=change_password">
+                                <i class="icon-mid bi bi-key me-2"></i>
+                                Change Password
+                            </a>
+                        </li>
+
+                        <li><hr class="dropdown-divider" /></li>
+
+                        <li>
+                            <a class="dropdown-item text-danger"
+                            href="index.php?halaman=logout"
+                            onclick="return confirm('Yakin ingin logout?')">
                                 <i class="icon-mid bi bi-box-arrow-left me-2"></i>
                                 Logout
                             </a>
                         </li>
                     </ul>
+
 
                 </div>
             </div>
