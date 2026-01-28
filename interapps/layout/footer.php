@@ -15,6 +15,25 @@
 
 <!-- ================= SCRIPT GLOBAL ================= -->
 
+<script>
+function confirmLogout(e) {
+    e.preventDefault();
+
+    Swal.fire({
+        title: 'Yakin logout?',
+        text: 'Anda akan keluar dari sistem',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Logout',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = 'index.php?halaman=logout';
+        }
+    });
+}
+</script>
+
 <script src="./assets/js/bootstrap.js"></script>
 <script src="./assets/js/app.js"></script>
 

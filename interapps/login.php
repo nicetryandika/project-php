@@ -39,6 +39,7 @@
                 if ($password === $user['password']) {
                     $_SESSION['user_id']  = $user['id'];
                     $_SESSION['username'] = $user['username'];
+                    $_SESSION['nama']     = $user['username']; // 🔥 INI KUNCINYA
                     $_SESSION['role']     = $user['role'];
                     $_SESSION['timeout']  = time() + (24 * 60 * 60);
                     echo "

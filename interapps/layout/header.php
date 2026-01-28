@@ -1,53 +1,75 @@
+<?php
+// fallback jika session belum ada
+$nama = $_SESSION['nama'] ?? 'Guest';
+$role = $_SESSION['role'] ?? 'Unknown';
+
+// mapping role biar lebih rapi ditampilkan
+$roleLabel = match ($role) {
+    'ADMIN' => 'Administrator',
+    'NOC' => 'NOC',
+    'PROVISIONING' => 'Provisioning',
+    default => 'User'
+};
+?>
 
 <header>
     <nav class="navbar navbar-expand navbar-light navbar-top">
         <div class="container-fluid">
+
+            <!-- Toggle Sidebar -->
             <a href="#" class="burger-btn d-block">
                 <i class="bi bi-justify fs-3"></i>
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse">
                 <div class="dropdown ms-auto">
+
+                    <!-- USER DROPDOWN -->
                     <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                        <div class="user-menu d-flex">
+                        <div class="user-menu d-flex align-items-center">
+
+                            <!-- USER INFO -->
                             <div class="user-name text-end me-3">
                                 <h6 class="mb-0 text-gray-600">
-                                    <?= !isset($_SESSION['nama']) ? 'Guest' : $_SESSION['nama'] ?></h6>
-                                <p class="mb-0 text-sm text-gray-600">Administrator</p>
+                                    <?= htmlspecialchars($nama) ?>
+                                </h6>
+                                <p class="mb-0 text-sm text-gray-600">
+                                    <?= $roleLabel ?>
+                                </p>
                             </div>
+
+                            <!-- AVATAR -->
                             <div class="user-img d-flex align-items-center">
                                 <div class="avatar avatar-md">
-                                    <img src="./assets/compiled/jpg/1.jpg" />
+                                    <img src="./assets/compiled/jpg/1.jpg" alt="User Avatar">
                                 </div>
                             </div>
+
                         </div>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton" style="min-width: 11rem">
-                        <li>
-                            <h6 class="dropdown-header">Hello,
-                                <?= !isset($_SESSION['nama']) ? 'Guest' : $_SESSION['nama'] ?></h6>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
-                        <?php if (isset($_SESSION['nama'])) : ?>
-                            <li>
-                                <a class="dropdown-item" href="index.php?halaman=logout" onclick="confirmLogout(event)"><i class="icon-mid bi bi-box-arrow-left me-2"></i>
-                                    Logout</a>
-                            </li>
-                        <?php else : ?>
-                            <li>
-                                <a class="dropdown-item" href="login.php"><i class="icon-mid bi bi-box-arrow-left me-2"></i>
-                                    Login</a>
-                            </li>
-                        <?php endif ?>
 
+                    <!-- DROPDOWN MENU -->
+                    <ul class="dropdown-menu dropdown-menu-end" style="min-width: 11rem">
+                        <li>
+                            <h6 class="dropdown-header">
+                                Hello, <?= htmlspecialchars($nama) ?>
+                            </h6>
+                        </li>
+                        <li><hr class="dropdown-divider" /></li>
+
+                        <li>
+                            <a class="dropdown-item"
+                               href="index.php?halaman=logout"
+                               onclick="return confirm('Yakin ingin logout?')">
+                                <i class="icon-mid bi bi-box-arrow-left me-2"></i>
+                                Logout
+                            </a>
+                        </li>
                     </ul>
+
                 </div>
             </div>
+
         </div>
     </nav>
 </header>
