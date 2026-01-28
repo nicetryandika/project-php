@@ -30,6 +30,7 @@ if (isset($_SESSION['timeout']) && $now > $_SESSION['timeout']) {
     header('Location: login.php');
     exit;
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

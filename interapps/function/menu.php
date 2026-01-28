@@ -40,10 +40,10 @@ switch ($halaman) {
     case 'edit_user':
         include "page/user/edit.php";
         break;
-
+        
     case 'hapus_user':
         include "page/user/delete.php";
-        break;   
+        break;
 
     case 'logout':
         include "page/logout.php";

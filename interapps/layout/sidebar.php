@@ -56,8 +56,12 @@ switch ($halaman) {
                 </div>
             </div>
         </div>
+        <!-- ========================= -->
+        <!-- SIDEBAR MENU -->
+        <!-- ========================= -->
         <div class="sidebar-menu">
             <ul class="menu">
+                <!-- ===== MENU UTAMA ===== -->
                 <li class="sidebar-title">Menu</li>
 
                 <li class="sidebar-item <?= $beranda ? 'active' : '' ?>">
@@ -67,6 +71,7 @@ switch ($halaman) {
                     </a>
                 </li>
 
+                <!-- ===== STARLINK ===== -->
                 <li class="sidebar-title">Starlink</li>
 
                 <li class="sidebar-item <?= $controller ? 'active' : '' ?>">
@@ -76,19 +81,28 @@ switch ($halaman) {
                     </a>
                 </li>
 
+                <!-- TAMBAH CONTROLLER -->
                 <?php if ($_SESSION['role'] === 'NOC' || $_SESSION['role'] === 'PROVISIONING') : ?>
-                <li class="sidebar-item <?= $tambah_controller ? 'active' : '' ?>">
-                    <a href="index.php?halaman=tambah_controller" class="sidebar-link">
-                        <i class="bi bi-plus-circle-fill"></i>
-                        <span>Tambah Controller</span>
-                    </a>
-                </li>
+                    <li class="sidebar-item <?= $tambah_controller ? 'active' : '' ?>">
+                        <a href="index.php?halaman=tambah_controller" class="sidebar-link">
+                            <i class="bi bi-plus-circle-fill"></i>
+                            <span>Tambah Controller</span>
+                        </a>
+                    </li>
                 <?php endif; ?>
-                    </ul>
 
+                <!-- ===== ADMIN AREA ===== -->
+                <?php if ($_SESSION['role'] === 'NOC') : ?>
+                    <li class="sidebar-title">Admin</li>
 
+                    <li class="sidebar-item <?= $user ? 'active' : '' ?>">
+                        <a href="index.php?halaman=user" class="sidebar-link">
+                            <i class="bi bi-people-fill"></i>
+                            <span>User Management</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
                 </li>
-
             </ul>
         </div>
     </div>
