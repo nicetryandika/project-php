@@ -69,7 +69,7 @@ $roleLabel = match ($role) {
                             <a class="dropdown-item"
                             href="index.php?halaman=change_password">
                                 <i class="icon-mid bi bi-key me-2"></i>
-                                Change Password
+                                Account Security
                             </a>
                         </li>
 

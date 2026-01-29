@@ -73,6 +73,15 @@ if (isset($_SESSION['timeout']) && $now > $_SESSION['timeout']) {
     </div>
 </div>
 
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
 <script src="./assets/static/js/components/dark.js"></script>
 <script src="./assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script src="./assets/compiled/js/app.js"></script>

@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // hanya ADMIN boleh hapus
-if ($_SESSION['role'] !== 'ADMIN') {
+if ($_SESSION['role'] !== 'NOC') {
     echo "<script>
         alert('Akses ditolak');
         window.location='index.php?halaman=user';

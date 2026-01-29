@@ -109,49 +109,72 @@
     ?>
     <script src="assets/static/js/initTheme.js"></script>
     <div id="auth">
-        <div class="row h-100">
-            <div class="col-lg-5 col-12">
-                <div id="auth-left">
-                    <div class="auth-logo">
-                        <a href="login.php"><img src="./assets/compiled/svg/logoiw.png" alt="Logo" /></a>
-                    </div>
-                    <h1 class="auth-title">Masuk.</h1>
-                    <p class="auth-subtitle mb-5">
-                        Masuk dengan data yang sudah anda daftarkan pada halaman register.
-                    </p>
+    <div class="row h-100">
 
-                    <form action="" method="post">
-                        <div class="form-group position-relative has-icon-left mb-4">
-                            <input type="text" class="form-control form-control-xl" placeholder="Username" name="username" required />
-                            <div class="form-control-icon">
-                                <i class="bi bi-person"></i>
-                            </div>
-                        </div>
-                        <div class="form-group position-relative has-icon-left mb-4">
-                            <input type="password" class="form-control form-control-xl" placeholder="Password" name="password" required />
-                            <div class="form-control-icon">
-                                <i class="bi bi-shield-lock"></i>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5" name="login">
-                            Masuk
-                        </button>
-                    </form>
-                    <div class="text-center mt-5 text-lg fs-4">
-                        <p class="text-gray-600">
-                            Belom punya akun?
-                            <a href="register.php" class="font-bold">Daftar</a>.
-                        </p>
-                    </div>
+        <!-- LEFT FORM -->
+        <div class="col-lg-5 col-12">
+            <div id="auth-left">
+
+                <!-- LOGO -->
+                <div class="auth-logo mb-4">
+                    <a href="login.php">
+                        <img src="./assets/compiled/png/logoiw.png" alt="Logo">
+                    </a>
                 </div>
-            </div>
-            <div class="col-lg-7 d-none d-lg-block">
-                <div id="auth-right"></div>
+
+                <h2 class="auth-title">Masuk.</h2>
+                <p class="auth-subtitle mb-4">
+                    Masuk untuk mengelola sistem dashboard InterApps.
+                </p>
+
+                <!-- FORM -->
+                <form method="post">
+
+                    <div class="form-group position-relative has-icon-left mb-4">
+                        <input type="text"
+                               class="form-control form-control-xl"
+                               name="username"
+                               placeholder="Username"
+                               required>
+                        <div class="form-control-icon">
+                            <i class="bi bi-person"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group position-relative has-icon-left mb-4">
+                        <input type="password"
+                               class="form-control form-control-xl"
+                               name="password"
+                               placeholder="Password"
+                               required>
+                        <div class="form-control-icon">
+                            <i class="bi bi-shield-lock"></i>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-block btn-lg shadow-lg mt-3"
+                            name="login">
+                        Login
+                    </button>
+
+                </form>
+
+                <div class="text-center mt-4 text-lg fs-6">
+                    <p class="text-gray-600">
+                        Belum punya akun?
+                        <a href="register.php" class="font-bold">
+                            Register
+                        </a>
+                    </p>
+                </div>
+
             </div>
         </div>
+
+        <!-- RIGHT IMAGE -->
+        <div class="col-lg-7 d-none d-lg-block">
+            <div id="auth-right"></div>
+        </div>
+
     </div>
-
-
-</body>
-
-</html>
+</div>
