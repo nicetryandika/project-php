@@ -1,99 +1,122 @@
 <?php
-// ambil data controller
-$query = mysqli_query($connection, "SELECT * FROM starlink_controller ORDER BY id DESC");
+require_once "./function/nocodb.php";
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$data = nocodb_get(
+    "/tables/mtvbg7xww4vqwj7/records?limit=100"
+);
+
+$controllers = $data['list'] ?? [];
+
+// // DEBUG SEKALI SAJA
+// echo '<pre>'; print_r($data); exit;
+
 ?>
 
 <div class="page-heading">
-    <h3>Controller Management</h3>
+    <h3>Data Controller Starlink</h3>
 </div>
 
-<div class="card">
+<div class="page-content">
+    <section class="row">
+        <div class="col-12">
 
-    <!-- HEADER -->
-    <div class="card-header d-flex justify-content-between align-items-center">
+            <!-- SEARCH
+            <div class="card">
+                <div class="card-body">
+                    <form method="get" class="row g-2">
+                        <div class="col-md-4">
+                            <input type="text"
+                                   name="q"
+                                   class="form-control"
+                                   placeholder="Cari nama controller..."
+                                   value="<?= htmlspecialchars($search); ?>">
+                        </div>
+                        <div class="col-md-auto">
+                            <button class="btn btn-primary">
+                                <i class="bi bi-search"></i> Cari
+                            </button>
+                        </div>
+                        <div class="col-md-auto">
+                            <a href="index.php" class="btn btn-light">
+                                Reset
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div> -->
 
-        <!-- LEFT ACTION -->
-        <a href="index.php?halaman=tambah_controller"
-           class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Tambah Controller
-        </a>
+            <!-- TABLE -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">List Controller</h4>
+                </div>
 
-        <!-- SEARCH -->
-        <input type="text"
-               id="searchController"
-               class="form-control w-25"
-               placeholder="Cari SN / Lokasi / IP / Status">
-    </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Controller</th>
+                                    <th>Nama Akun</th>
+                                    <th>Email Akun</th>
+                                    <th>Status Aktif</th>
+                                    <th class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php if (empty($controllers)): ?>
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">
+                                        Data tidak ditemukan
+                                    </td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($controllers as $i => $row): ?>
+                                    <tr>
+                                        <td><?= $i + 1; ?></td>
+                                        <td><?= htmlspecialchars($row['Nama Controller'] ?? '-'); ?></td>
+                                        <td><?= htmlspecialchars($row['Nama Akun'] ?? '-'); ?></td>
+                                        <td><?= htmlspecialchars($row['Email Akun'] ?? '-'); ?></td>
+                                        <td>
+                                            <?php if (($row['Status Aktif'] ?? '') === 'Aktif'): ?>
+                                                <span class="badge bg-success">Aktif</span>
+                                            <?php else: ?>
+                                                <span class="badge bg-secondary">Nonaktif</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <!--  READ  -->
+                                        <td class="text-center">
+                                            <a href="index.php?halaman=controller/read&id=<?= $row['Id']; ?>"
+                                            class="btn btn-sm btn-info">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <!--  EDIT  -->
+                                            <a href="index.php?halaman=controller/edit&id=<?= $row['Id']; ?>"
+                                            class="btn btn-sm btn-warning">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <!--  DELETE  -->
+                                            <a href="index.php?halaman=controller/delete&id=<?= $row['Id']; ?>"
+                                            onclick="return confirm('Hapus data ini?')"
+                                            class="btn btn-sm btn-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
-    <!-- BODY -->
-    <div class="card-body">
-        <table class="table table-striped" id="tableController">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Serial Number</th>
-                    <th>Lokasi</th>
-                    <th>IP Public</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php $no = 1; while ($row = mysqli_fetch_assoc($query)) : ?>
-                <tr>
-                    <td><?= $no++ ?></td>
-                    <td><?= htmlspecialchars($row['serial_number']) ?></td>
-                    <td><?= htmlspecialchars($row['lokasi']) ?></td>
-                    <td><?= htmlspecialchars($row['ip_public']) ?></td>
-
-                    <!-- STATUS BADGE -->
-                    <td>
-                        <?php if ($row['status'] === 'ONLINE') : ?>
-                            <span class="badge bg-success">ONLINE</span>
-                        <?php else : ?>
-                            <span class="badge bg-danger">OFFLINE</span>
-                        <?php endif; ?>
-                    </td>
-
-                    <!-- ACTION -->
-                    <td>
-                        <a href="index.php?halaman=edit_controller&id=<?= $row['id'] ?>"
-                           class="btn btn-sm btn-warning">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-
-                        <a href="index.php?halaman=hapus_controller&id=<?= $row['id'] ?>"
-                           class="btn btn-sm btn-danger"
-                           onclick="return confirm('Hapus controller ini?')">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
+        </div>
+    </section>
 </div>
-
-<!-- DATATABLE SCRIPT -->
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-
-    const table = $('#tableController').DataTable({
-        pageLength: 10,
-        lengthChange: false,
-        ordering: true,
-        info: true,
-        dom: 'rtip', // hide default search
-        language: {
-            emptyTable: "Data controller tidak tersedia"
-        }
-    });
-
-    // Custom search
-    document.getElementById('searchController').addEventListener('keyup', function () {
-        table.search(this.value).draw();
-    });
-
-});
-</script>

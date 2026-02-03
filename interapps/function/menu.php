@@ -28,6 +28,11 @@ switch ($halaman) {
     include "page/controller/delete.php";
         break;
 
+    case 'controller/read':
+    include 'page/controller/read.php';
+    break;
+
+
     //User Management
     case 'user':
         include "page/user/index.php";
