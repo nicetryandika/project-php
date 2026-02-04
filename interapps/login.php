@@ -1,180 +1,284 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+include "./function/connection.php";
+session_start();
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
-
-    <link rel="shortcut icon" href="./assets/compiled/png/logoiw.png" type="image/x-icon" />
-    <link rel="shortcut icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAiCAYAAADRcLDBAAAEs2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjMzIgogICBleGlmOlBpeGVsWURpbWVuc2lvbj0iMzQiCiAgIGV4aWY6Q29sb3JTcGFjZT0iMSIKICAgdGlmZjpJbWFnZVdpZHRoPSIzMyIKICAgdGlmZjpJbWFnZUxlbmd0aD0iMzQiCiAgIHRpZmY6UmVzb2x1dGlvblVuaXQ9IjIiCiAgIHRpZmY6WFJlc29sdXRpb249Ijk2LjAiCiAgIHRpZmY6WVJlc29sdXRpb249Ijk2LjAiCiAgIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiCiAgIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIKICAgeG1wOk1vZGlmeURhdGU9IjIwMjItMDMtMzFUMTA6NTA6MjMrMDI6MDAiCiAgIHhtcDpNZXRhZGF0YURhdGU9IjIwMjItMDMtMzFUMTA6NTA6MjMrMDI6MDAiPgogICA8eG1wTU06SGlzdG9yeT4KICAgIDxyZGY6U2VxPgogICAgIDxyZGY6bGkKICAgICAgc3RFdnQ6YWN0aW9uPSJwcm9kdWNlZCIKICAgICAgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWZmaW5pdHkgRGVzaWduZXIgMS4xMC4xIgogICAgICBzdEV2dDp3aGVuPSIyMDIyLTAzLTMxVDEwOjUwOjIzKzAyOjAwIi8+CiAgICA8L3JkZjpTZXE+CiAgIDwveG1wTU06SGlzdG9yeT4KICA8L3JkZjpEZXNjcmlwdGlvbj4KIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+Cjw/eHBhY2tldCBlbmQ9InIiPz5V57uAAAABgmlDQ1BzUkdCIElFQzYxOTY2LTIuMQAAKJF1kc8rRFEUxz9maORHo1hYKC9hISNGTWwsRn4VFmOUX5uZZ36oeTOv954kW2WrKLHxa8FfwFZZK0WkZClrYoOe87ypmWTO7dzzud97z+nec8ETzaiaWd4NWtYyIiNhZWZ2TvE946WZSjqoj6mmPjE1HKWkfdxR5sSbgFOr9Ll/rXoxYapQVik8oOqGJTwqPL5i6Q5vCzeo6dii8KlwpyEXFL519LjLLw6nXP5y2IhGBsFTJ6ykijhexGra0ITl5bRqmWU1fx/nJTWJ7PSUxBbxJkwijBBGYYwhBgnRQ7/MIQIE6ZIVJfK7f/MnyUmuKrPOKgZLpEhj0SnqslRPSEyKnpCRYdXp/9++msneoFu9JgwVT7b91ga+LfjetO3PQ9v+PgLvI1xkC/m5A+h7F32zoLXug38dzi4LWnwHzjeg8UGPGbFfySvuSSbh9QRqZ6H+Gqrm3Z7l9zm+h+iafNUV7O5Bu5z3L/wAdthn7QIme0YAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAJTSURBVFiF7Zi9axRBGIefEw2IdxFBRQsLWUTBaywSK4ubdSGVIY1Y6HZql8ZKCGIqwX/AYLmCgVQKfiDn7jZeEQMWfsSAHAiKqPiB5mIgELWYOW5vzc3O7niHhT/YZvY37/swM/vOzJbIqVq9uQ04CYwCI8AhYAlYAB4Dc7HnrOSJWcoJcBS4ARzQ2F4BZ2LPmTeNuykHwEWgkQGAet9QfiMZjUSt3hwD7psGTWgs9pwH1hC1enMYeA7sKwDxBqjGnvNdZzKZjqmCAKh+U1kmEwi3IEBbIsugnY5avTkEtIAtFhBrQCX2nLVehqyRqFoCAAwBh3WGLAhbgCRIYYinwLolwLqKUwwi9pxV4KUlxKKKUwxC6ZElRCPLYAJxGfhSEOCz6m8HEXvOB2CyIMSk6m8HoXQTmMkJcA2YNTHm3congOvATo3tE3A29pxbpnFzQSiQPcB55IFmFNgFfEQeahaAGZMpsIJIAZWAHcDX2HN+2cT6r39GxmvC9aPNwH5gO1BOPFuBVWAZue0vA9+A12EgjPadnhCuH1WAE8ivYAQ4ohKaagV4gvxi5oG7YSA2vApsCOH60WngKrA3R9IsvQUuhIGY00K4flQG7gHH/mLytB4C42EgfrQb0mV7us8AAMeBS8mGNMR4nwHamtBB7B4QRNdaS0M8GxDEog7iyoAguvJ0QYSBuAOcAt71Kfl7wA8DcTvZ2KtOlJEr+ByyQtqqhTyHTIeB+ONeqi3brh+VgIN0fohUgWGggizZFTplu12yW8iy/YLOGWMpDMTPXnl+Az9vj2HERYqPAAAAAElFTkSuQmCC" type="image/png" />
-
-    <link rel="stylesheet" href="./assets/compiled/css/app.css" />
-    <link rel="stylesheet" href="./assets/compiled/css/app-dark.css" />
-    <link rel="stylesheet" href="./assets/compiled/css/auth.css" />
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-
-<body>
-    <?php
-    include "./function/connection.php";
-
-    session_start();
-
-    if (isset($_SESSION['user_id'])) {
+if (isset($_SESSION['user_id'])) {
     header('Location: index.php?halaman=beranda');
     exit;
 }
 
-    try {
-        if (isset($_POST['login'])) {
-            $username = mysqli_real_escape_string($connection, $_POST['username']);
-            $password = mysqli_real_escape_string($connection, $_POST['password']);
+$login_status = null;
+if (isset($_POST['login'])) {
+    $username = mysqli_real_escape_string($connection, $_POST['username']);
+    $password = mysqli_real_escape_string($connection, $_POST['password']);
 
-            $query = mysqli_query($connection, "SELECT * FROM users WHERE username 
-            = '$username' AND status='ACTIVE'");
-            $user = mysqli_fetch_assoc($query);
+    $query = mysqli_query($connection, "SELECT * FROM users WHERE username = '$username' AND status='ACTIVE'");
+    $user = mysqli_fetch_assoc($query);
 
-            if (mysqli_num_rows($query) > 0) {
-                if ($password === $user['password']) {
-                    $_SESSION['user_id']  = $user['id'];
-                    $_SESSION['avatar'] = $user['avatar'];
-                    $_SESSION['username'] = $user['username'];
-                    $_SESSION['nama']     = $user['nama']; // 🔥 INI KUNCINYA
-                    $_SESSION['role']     = $user['role'];
-                    $_SESSION['timeout']  = time() + (24 * 60 * 60);
-                    echo "
-            <script>
-            Swal.fire({
-                title: 'Berhasil',
-                text: 'Berhasil Login!',
-                icon: 'success',
-                showConfirmButton: false,
-                timer: 2000,
-                timerProgressBar: true,
-            }).then(() => {
-                window.location.href = 'index.php?halaman=beranda';
-            })
-            </script>
-            ";
-                } else {
-                    echo "
-            <script>
-            Swal.fire({
-                title: 'Gagal',
-                text: 'username / password yang anda masukkan salah!',
-                icon: 'error',
-                showConfirmButton: true,
-                timer: 2000,
-                timerProgressBar: true,
-            }).then(() => {
-                window.location.href = 'login.php';
-            })
-            </script>
-            ";
-                }
-            } else {
-                echo "
-            <script>
-            Swal.fire({
-                title: 'Gagal',
-                text: 'Akun yang anda masukkan tidak ada!',
-                icon: 'error',
-                showConfirmButton: false,
-                timer: 2000,
-                timerProgressBar: true,
-            }).then(() => {
-                window.location.href = 'index.php?halaman=login';
-            })
-            </script>
-            ";
-            }
-        }
-    } catch (\Throwable $th) {
-        echo "
-            <script>
-            Swal.fire({
-                title: 'Gagal',
-                text: 'Server error!',
-                icon: 'error',
-                showConfirmButton: false,
-                timer: 2000,
-                timerProgressBar: true,
-            }).then(() => {
-                window.location.href = 'login.php';
-            })
-            </script>
-            ";
+    if ($user && $password === $user['password']) {
+        $_SESSION['user_id']  = $user['id'];
+        $_SESSION['avatar']   = $user['avatar'];
+        $_SESSION['nama']     = $user['nama'];
+        $_SESSION['role']     = $user['role'];
+        $login_status = "success";
+    } else {
+        $login_status = "failed";
     }
-    ?>
-    <script src="assets/static/js/initTheme.js"></script>
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InterApps | Dashboard</title>
+
+    <link rel="shortcut icon" href="./assets/compiled/png/logo-bulat-transparan.png" type="image/png">
+    <link rel="stylesheet" href="./assets/compiled/css/app.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root {
+            --bg-deep: #0f0a1e;
+            --purple-primary: #7c4dff;
+            --purple-light: #b388ff;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        #auth {
+            height: 100vh;
+            display: flex;
+        }
+
+        /* --- LEFT SECTION: Form --- */
+        .auth-left {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff; /* Bersih seperti di gambar */
+            border-radius: 0 40px 40px 0;
+            z-index: 20;
+            box-shadow: 20px 0 50px rgba(0,0,0,0.2);
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 380px;
+            padding: 20px;
+            color: #333;
+        }
+
+        .auth-title { font-weight: 800; font-size: 2.2rem; color: #1a1a1a; margin-bottom: 0.5rem; }
+        .auth-subtitle { color: #666; margin-bottom: 2rem; }
+
+        .custom-input {
+            background: #f4f7ff;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 14px 15px 14px 50px;
+            width: 100%;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: var(--purple-primary);
+            background: #fff;
+            box-shadow: 0 10px 20px rgba(124, 77, 255, 0.1);
+        }
+
+        .input-wrapper { position: relative; margin-bottom: 1.2rem; }
+        .input-wrapper i {
+            position: absolute;
+            left: 20px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--purple-primary);
+            font-size: 1.2rem;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #7c4dff 0%, #4527a0 100%);
+            color: white; border: none; padding: 16px; border-radius: 15px;
+            font-weight: 700; width: 100%; margin-top: 1rem;
+            box-shadow: 0 10px 30px rgba(124, 77, 255, 0.4);
+            cursor: pointer; transition: 0.3s;
+        }
+
+        .btn-login:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(124, 77, 255, 0.5); }
+
+        /* --- RIGHT SECTION: Visual (Estetik Smooth) --- */
+        .auth-right {
+            flex: 1.3;
+            display: none;
+            background: radial-gradient(circle at top right, #2e1a47, #0f0a1e);
+            position: relative;
+            overflow: hidden;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media (min-width: 992px) { .auth-right { display: flex; } }
+
+        /* Background Glow Blobs */
+        .glow {
+            position: absolute; width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(124, 77, 255, 0.2) 0%, transparent 70%);
+            filter: blur(80px); z-index: 1;
+        }
+        .glow-1 { top: -100px; right: -50px; }
+        .glow-2 { bottom: -100px; left: -50px; background: rgba(233, 30, 99, 0.15); }
+
+        .visual-container { 
+            position: relative; z-index: 10; width: 100%; 
+            max-width: 500px; display: flex; flex-direction: column; align-items: center; 
+        }
+
+        .visual-img {
+            width: 50%; /* Kecil & Rapi */
+            max-height: 250px;
+            object-fit: contain;
+            margin-bottom: 3rem;
+            filter: drop-shadow(0 0 30px rgba(124, 77, 255, 0.4));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Floating Glass Card */
+        .banner-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 2.5rem;
+            text-align: left;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.4);
+            width: 90%;
+            position: relative;
+        }
+
+        .banner-card::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        }
+
+        .banner-text h2 { 
+            color: #fff; font-weight: 800; font-size: 1.8rem; margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .banner-text p { color: rgba(255, 255, 255, 0.6); font-size: 1rem; line-height: 1.6; }
+        
+        .banner-badge {
+            display: inline-flex; align-items: center;
+            background: rgba(124, 77, 255, 0.2);
+            color: var(--purple-light); padding: 8px 16px; border-radius: 50px;
+            font-size: 0.75rem; font-weight: 700; margin-top: 1.5rem;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+
+        @keyframes fadeInSlide {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+
+<body>
+    <?php if ($login_status === "success"): ?>
+        <script>
+            Swal.fire({ icon: 'success', title: 'Welcome Back', text: 'Securing your session...', timer: 1500, showConfirmButton: false, background: '#fff', color: '#333' })
+            .then(() => { window.location.href = 'index.php?halaman=beranda'; });
+        </script>
+    <?php elseif ($login_status === "failed"): ?>
+        <script>
+            Swal.fire({ icon: 'error', title: 'Access Denied', text: 'Invalid credentials.', confirmButtonColor: '#7c4dff' });
+        </script>
+    <?php endif; ?>
+
     <div id="auth">
-    <div class="row h-100">
-
-        <!-- LEFT FORM -->
-        <div class="col-lg-5 col-12">
-            <div id="auth-left">
-
-                <!-- LOGO -->
+        <div class="auth-left">
+            <div class="auth-card">
                 <div class="auth-logo mb-4">
-                    <a href="login.php">
-                        <img src="./assets/compiled/png/logoiw.png" alt="Logo">
-                    </a>
+                    <img src="./assets/compiled/png/logoiw.png" alt="Logo" height="50">
                 </div>
+                
+                <h1 class="auth-title">Welcome Back.</h1>
+                <p class="auth-subtitle">Sign in to manage your infrastructure.</p>
 
-                <h2 class="auth-title">Masuk.</h2>
-                <p class="auth-subtitle mb-4">
-                    Masuk untuk mengelola sistem dashboard InterApps.
-                </p>
-
-                <!-- FORM -->
-                <form method="post">
-
-                    <div class="form-group position-relative has-icon-left mb-4">
-                        <input type="text"
-                               class="form-control form-control-xl"
-                               name="username"
-                               placeholder="Username"
-                               required>
-                        <div class="form-control-icon">
-                            <i class="bi bi-person"></i>
-                        </div>
+                <form method="POST">
+                    <div class="input-wrapper">
+                        <i class="bi bi-person-circle"></i>
+                        <input type="text" name="username" class="custom-input" placeholder="Username" required autofocus>
                     </div>
 
-                    <div class="form-group position-relative has-icon-left mb-4">
-                        <input type="password"
-                               class="form-control form-control-xl"
-                               name="password"
-                               placeholder="Password"
-                               required>
-                        <div class="form-control-icon">
-                            <i class="bi bi-shield-lock"></i>
-                        </div>
+                    <div class="input-wrapper">
+                        <i class="bi bi-shield-lock-fill"></i>
+                        <input type="password" name="password" class="custom-input" placeholder="Password" required>
                     </div>
 
-                    <button class="btn btn-primary btn-block btn-lg shadow-lg mt-3"
-                            name="login">
-                        Login
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="remember">
+                            <label class="form-check-label text-secondary small" for="remember">Remember Me</label>
+                        </div>
+                        <a href="#" class="small fw-bold text-decoration-none" style="color: var(--purple-primary)">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" name="login" class="btn-login">
+                        LOG IN SYSTEM
                     </button>
 
+                    <div class="text-center mt-4">
+                        <p class="small text-muted">
+                            Belum memiliki akses? 
+                            <a href="register.php" class="fw-bold text-decoration-none" style="color: var(--purple-primary)">
+                                Daftar Akun Baru
+                            </a>
+                        </p>
+                    </div>
                 </form>
 
-                <div class="text-center mt-4 text-lg fs-6">
-                    <p class="text-gray-600">
-                        Belum punya akun?
-                        <a href="register.php" class="font-bold">
-                            Register
-                        </a>
-                    </p>
-                </div>
-
+                <p class="text-center text-muted small mt-5">© 2026 InterApps System</p>
             </div>
         </div>
 
-        <!-- RIGHT IMAGE -->
-        <div class="col-lg-7 d-none d-lg-block">
-            <div id="auth-right"></div>
+        <div class="auth-right">
+            <div class="glow glow-1"></div>
+            <div class="glow glow-2"></div>
+            
+            <div class="visual-container">
+                <img src="./assets/compiled/png/wangwang.png" alt="Mascot" class="visual-img">
+                
+                <div class="banner-card">
+                    <div class="banner-text">
+                        <h2>High Speed Internet without Boundaries</h2>
+                        <p>Seamless integration for your entire NOC infrastructure. Built for speed, secured for scale.</p>
+                    </div>
+                    <div class="banner-badge">
+                        <i class="bi bi-cpu-fill me-2"></i> Secured Infrastructure
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
-</div>
+</body>
+</html>

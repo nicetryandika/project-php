@@ -39,7 +39,7 @@ if (isset($_SESSION['timeout']) && $now > $_SESSION['timeout']) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inter Apps</title>
 
-    <link rel="shortcut icon" href="./assets/compiled/svg/favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="./assets/compiled/png/logo-bulat-transparan.png" type="image/x-icon" />
     <link rel="stylesheet" href="./assets/extensions/simple-datatables/style.css" />
     <link rel="stylesheet" href="./assets/compiled/css/table-datatable.css" />
     <link rel="stylesheet" href="./assets/compiled/css/app.css" />
