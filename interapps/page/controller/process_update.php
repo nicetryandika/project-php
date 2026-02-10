@@ -1,46 +1,49 @@
 <?php
-// page/controller/process_update.php
+// page/controller/proses_update.php
 
-// 1. Session & Path Management (Sama seperti add/delete untuk menghindari error path)
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (file_exists("function/nocodb.php")) {
-    require_once "function/nocodb.php";
-} elseif (file_exists("../../function/nocodb.php")) {
-    require_once "../../function/nocodb.php";
-} else {
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/project-php/interapps/function/nocodb.php";
-}
+require_once "../../function/nocodb.php";
 
 $isSuccess = false;
-$debugMsg = "";
+$errorMessage = "";
 
-if (isset($_POST['submit'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tableId = "mtvbg7xww4vqwj7";
-    
-    // 2. Siapkan Payload
-    // PENTING: Kita harus mengirimkan ID di dalam body payload agar NocoDB tahu baris mana yang diupdate
+    $id = $_POST['Id']; // ID Record dari NocoDB
+
+    // Data yang akan diupdate
     $payload = [
-        "Id"             => $_POST['Id'], 
-        "NamaController" => $_POST['NamaController'],
-        "PaketLayanan"   => $_POST['PaketLayanan'],
-        "NamaAkun"       => $_POST['NamaAkun'],
-        "EmailAkun"      => $_POST['EmailAkun'],
-        "StatusAktif"    => $_POST['StatusAktif']
+        "Id"                => $id, // Diperlukan untuk identifikasi PATCH
+        "CodeController"    => $_POST['CodeController'] ?? null,
+        "NamaController"    => $_POST['NamaController'] ?? null,
+        "VersiHardware"     => $_POST['VersiHardware'] ?? null,
+        "KitNumber"         => $_POST['KitNumber'] ?? null,
+        "SerialNumber"      => $_POST['SerialNumber'] ?? null,
+        "IPAddress"         => $_POST['IPAddress'] ?? null,
+        "LokasiPemasangan"  => $_POST['LokasiPemasangan'] ?? null,
+        "TglAktivasi"       => $_POST['TglAktivasi'] ?? null,
+        "NamaAkun"          => $_POST['NamaAkun'] ?? null,
+        "EmailAkun"         => $_POST['EmailAkun'] ?? null,
+        "StatusAktif"       => $_POST['StatusAktif'] ?? 'Aktif',
+        "UsernameEmail"     => $_POST['UsernameEmail'] ?? null,
+        "PasswordEmail"     => $_POST['PasswordEmail'] ?? null,
+        "Catatan"           => $_POST['Catatan'] ?? null,
     ];
 
-    // 3. Kirim Request PATCH
-    // Endpoint: /tables/{tableId}/records
-    $response = nocodb_patch("/tables/{$tableId}/records", $payload);
+    /**
+     * Menggunakan PATCH untuk update record.
+     * Fungsi nocodb_patch biasanya menerima array of objects: [{$data}]
+     */
+    $response = nocodb_patch("/tables/{$tableId}/records", [$payload]);
 
-    // 4. Validasi Response
-    if (isset($response['Id']) || isset($response['id']) || (isset($response['msg']) && $response['msg'] == 'success')) {
+    // Validasi response (NocoDB mengembalikan list record yang diupdate jika berhasil)
+    if (isset($response[0]['Id']) || isset($response['Id'])) {
         $isSuccess = true;
     } else {
-        $isSuccess = false;
-        $debugMsg = json_encode($response);
+        $errorMessage = is_array($response) ? json_encode($response) : "Gagal memperbarui database.";
     }
 }
 ?>
@@ -48,27 +51,28 @@ if (isset($_POST['submit'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="./assets/compiled/png/logo-bulat-transparan.png" type="image/x-icon" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
 </head>
 <body>
     <script>
     <?php if ($isSuccess): ?>
         Swal.fire({
             icon: 'success',
-            title: 'Berhasil Update!',
-            text: 'Data controller telah diperbarui.',
-            confirmButtonColor: '#435ebe',
-            timer: 2000
+            title: 'Berhasil Diperbarui',
+            text: 'Data unit telah diperbarui di sistem.',
+            timer: 2000,
+            showConfirmButton: false
         }).then(() => {
             window.location.href = "../../index.php?halaman=controller";
         });
     <?php else: ?>
         Swal.fire({
             icon: 'error',
-            title: 'Gagal Update!',
-            html: '<small><?= addslashes($debugMsg) ?></small>',
-            confirmButtonColor: '#dc3545'
+            title: 'Gagal Update',
+            text: 'Error: <?= addslashes($errorMessage) ?>',
+            confirmButtonText: 'Kembali'
         }).then(() => {
             window.history.back();
         });

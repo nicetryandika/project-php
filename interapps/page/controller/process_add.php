@@ -5,34 +5,42 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Pastikan path nocodb.php benar
+// Sesuaikan path ke file fungsi nocodb kamu
 require_once "../../function/nocodb.php";
 
 $isSuccess = false;
 $errorMessage = "";
 
-if (isset($_POST['submit'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tableId = "mtvbg7xww4vqwj7";
     
-    // Menangkap semua inputan dari form
+    // Payload disesuaikan dengan semua kolom baru di NocoDB
     $payload = [
-        "NamaController"    => $_POST['NamaController'],
-        "PaketLayanan"      => $_POST['PaketLayanan'],
-        "LokasiPemasangan"  => $_POST['LokasiPemasangan'],
-        "NamaAkun"          => $_POST['NamaAkun'],
-        "EmailAkun"         => $_POST['EmailAkun'],
-        "StatusAktif"       => $_POST['StatusAktif'],
-        "UsernameEmail"     => $_POST['UsernameEmail'],
-        "PasswordEmail"     => $_POST['PasswordEmail'],
-        "Catatan"           => $_POST['Catatan'],
+        "CodeController"    => $_POST['CodeController'] ?? null,
+        "NamaController"    => $_POST['NamaController'] ?? null,
+        "VersiHardware"     => $_POST['VersiHardware'] ?? null,
+        "KitNumber"         => $_POST['KitNumber'] ?? null,
+        "SerialNumber"      => $_POST['SerialNumber'] ?? null,
+        "IPAddress"         => $_POST['IPAddress'] ?? null,
+        "LokasiPemasangan"  => $_POST['LokasiPemasangan'] ?? null,
+        "TglAktivasi"       => $_POST['TglAktivasi'] ?? null,
+        "NamaAkun"          => $_POST['NamaAkun'] ?? null,
+        "EmailAkun"         => $_POST['EmailAkun'] ?? null,
+        "PaketLayanan"      => $_POST['PaketLayanan'] ?? null,
+        "StatusAktif"       => $_POST['StatusAktif'] ?? 'Aktif',
+        "UsernameEmail"     => $_POST['UsernameEmail'] ?? null,
+        "PasswordEmail"     => $_POST['PasswordEmail'] ?? null,
+        "Catatan"           => $_POST['Catatan'] ?? null,
     ];
 
+    // Kirim data ke NocoDB melalui fungsi yang sudah kamu buat
     $response = nocodb_post("/tables/{$tableId}/records", $payload);
 
+    // Cek keberhasilan berdasarkan adanya 'Id' di response
     if (isset($response['Id']) || isset($response['id'])) {
         $isSuccess = true;
     } else {
-        $errorMessage = json_encode($response);
+        $errorMessage = is_array($response) ? json_encode($response) : "Terjadi kesalahan pada server database.";
     }
 }
 ?>
@@ -40,6 +48,10 @@ if (isset($_POST['submit'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <title>Processing...</title>
+
+    <link rel="shortcut icon" href="./assets/compiled/png/logo-bulat-transparan.png" type="image/x-icon" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
@@ -48,7 +60,7 @@ if (isset($_POST['submit'])) {
         Swal.fire({
             icon: 'success',
             title: 'Berhasil!',
-            text: 'Unit Controller baru telah ditambahkan.',
+            text: 'Unit <?= addslashes($_POST['NamaController']) ?> telah ditambahkan.',
             timer: 2000,
             showConfirmButton: false
         }).then(() => {
@@ -57,7 +69,7 @@ if (isset($_POST['submit'])) {
     <?php else: ?>
         Swal.fire({
             icon: 'error',
-            title: 'Gagal Menyimpan',
+            title: 'Gagal Simpan',
             text: 'Error: <?= addslashes($errorMessage) ?>',
             confirmButtonText: 'Coba Lagi'
         }).then(() => {
